@@ -1,0 +1,50 @@
+eps_list: [0.5, 1.0]
+seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+T: 20
+clip_B: 3.0
+jobs: 6
+proxy_eps_ratios: [0.0, 0.1, 0.2]
+
+budget:
+  mode: feedback_v3
+  warmup: 3
+  beta: 0.8
+  gamma: 1.0
+  drift_clip: 3.0
+  fixed:
+    low_mult: 2.0
+    high_mult: 3.2
+  collapse_boost: 1.0
+  collapse_threshold: 0.55
+  eps_cap: null
+  strong_low_frac: 0.7
+  strong_eps_min_ratio: 0.3
+  datasets:
+    gas:
+      fixed:
+        low_mult: 1.8
+        high_mult: 3.6
+      collapse_boost: 1.0
+      collapse_threshold: 0.6
+
+datasets:
+  har:
+    root: "./UCI HAR Dataset"
+    k: 6
+    pus_top_m: 128
+    pca_r: 64
+    d_sub_list: [561]
+  gas:
+    root: "./gas"
+    k: 6
+    pus_top_m: 64
+    pca_r: 32
+
+methods: [sahdpca, sahdpca_strong, sahdpca_wo_feedback]
+
+experiments:
+  e1:
+    datasets: [har, gas]
+    methods: [sahdpca, sahdpca_strong, sahdpca_wo_feedback]
+    eps_list: [0.5, 1.0]
+    seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]

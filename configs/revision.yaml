@@ -1,0 +1,89 @@
+eps_list: [0.5, 0.8, 1.0]
+seeds: [0, 1, 2]
+T: 20
+clip_B: 3.0
+proxy_eps_ratio: 0.1
+proxy_eps_min: 0.15
+proxy_after_reduction: true
+proxy_init_frac: 0.5
+proxy_init_min: 1500
+proxy_init_mode: noisy_means
+jobs: 6
+
+budget:
+  mode: feedback_v3
+  warmup: 3
+  beta: 0.8
+  gamma: 1.0
+  drift_clip: 3.0
+  fixed:
+    low_mult: 2.0
+    high_mult: 3.2
+  collapse_boost: 1.3
+  collapse_threshold: 0.55
+  eps_cap: null
+  strong_low_frac: 0.7
+  strong_eps_min_ratio: 0.3
+  datasets:
+    gas:
+      fixed:
+        low_mult: 1.8
+        high_mult: 3.6
+      collapse_boost: 1.3
+      collapse_threshold: 0.6
+
+datasets:
+  har:
+    root: "./UCI HAR Dataset"
+    k: 6
+    pus_top_m: 128
+    pca_r: 64
+    d_sub_list: [561]
+  gas:
+    root: "./gas"
+    k: 6
+    pus_top_m: 64
+    pca_r: 32
+  synthetic:
+    k: 10
+    n_list: [10000, 30000, 50000]
+    d_list: [256, 512, 1024, 2000]
+  synthetic_stream:
+    k: 10
+    n: 20000
+    d: 512
+    batches: 10
+
+revision:
+  sensitivity:
+    datasets: [har, gas]
+    eps: 1.0
+    seeds: [0]
+    method: sahdpca
+    pus_top_m_list: [64, 128]
+    pca_r_list: [32, 64]
+    proxy_eps_ratios: [0.1, 0.2]
+    budget_beta_list: [0.6, 0.8]
+    budget_gamma_list: [0.5, 1.0]
+  scalability:
+    dataset: synthetic
+    eps: 1.0
+    seeds: [0]
+    methods: [dp_kmeans, pca_dp, sahdpca]
+    n_list: [10000, 30000]
+    d_list: [256, 1024]
+    k_list: [10, 50]
+  imbalance:
+    dataset: synthetic
+    eps: 1.0
+    seeds: [0, 1]
+    methods: [dp_kmeans, pca_dp, sahdpca]
+    n: 20000
+    d: 512
+    k: 10
+    weights: [0.5, 0.0556, 0.0556, 0.0556, 0.0556, 0.0556, 0.0556, 0.0556, 0.0556, 0.0556]
+  streaming:
+    dataset: synthetic_stream
+    eps: 1.0
+    seeds: [0, 1]
+    methods: [dp_kmeans, pca_dp, sahdpca]

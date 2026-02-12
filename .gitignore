@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+.env
+outputs/
+paper/
+notes/
+figs/
+tables/
+UCI HAR Dataset/
+gas/
+README.md

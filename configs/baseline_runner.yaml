@@ -1,0 +1,84 @@
+eps_list: [0.2, 0.5, 0.8, 1.0, 1.5]
+seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+T: 20
+clip_B: 3.0
+jobs: 6
+budget:
+  mode: feedback_v3
+  warmup: 3
+  beta: 0.8
+  gamma: 1.0
+  drift_clip: 3.0
+  fixed:
+    low_mult: 2.0
+    high_mult: 3.2
+  collapse_boost: 1.0
+  collapse_threshold: 0.55
+  eps_cap: null
+  strong_low_frac: 0.7
+  strong_eps_min_ratio: 0.3
+  datasets:
+    gas:
+      fixed:
+        low_mult: 1.8
+        high_mult: 3.6
+      collapse_boost: 1.0
+      collapse_threshold: 0.6
+
+datasets:
+  har:
+    root: "./UCI HAR Dataset"
+    k: 6
+    pus_top_m: 128
+    pca_r: 64
+    d_sub_list: [561]
+  gas:
+    root: "./gas"
+    k: 6
+    pus_top_m: 64
+    pca_r: 32
+  synthetic:
+    k: 10
+    n_list: [1000, 5000, 10000]
+    d_list: [128, 256, 512]
+
+methods: [dp_kmeans, pca_dp, kmeanspp_dp, sahdpca, sahdpca_strong, sahdpca_wo_pus, sahdpca_wo_init, sahdpca_wo_feedback]
+
+experiments:
+  e1:
+    datasets: [har, gas]
+    methods: [dp_kmeans, pca_dp, kmeanspp_dp]
+    eps_list: [0.2, 0.5, 0.8, 1.0, 1.5]
+    seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+  e2:
+    dataset: har
+    eps: 1
+    d_sub_list: [64, 128, 256, 561]
+    methods: [dp_kmeans, pca_dp, kmeanspp_dp, sahdpca]
+  e3:
+    datasets: [har, gas]
+    eps: 1
+    methods: [sahdpca, sahdpca_wo_pus, sahdpca_wo_init, sahdpca_wo_feedback]
+  e4:
+    dataset: har
+    eps: 1
+    seed: 0
+    method: sahdpca
+  e5:
+    dataset: synthetic
+    eps: 1
+    methods: [dp_kmeans, sahdpca]
+  e6:
+    dataset: har
+    eps: 0.5
+    seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+    methods: [sahdpca, kmeanspp_dp, dp_kmeans]
+
+smoke:
+  dataset: synthetic
+  n: 300
+  d: 20
+  k: 3
+  eps: 1
+  seed: 0
+  methods: [dp_kmeans, sahdpca]
