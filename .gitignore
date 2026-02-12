@@ -1,4 +1,4 @@
-__pycache__/
+﻿__pycache__/
 *.py[cod]
 *.pyo
 *.pyd
@@ -12,4 +12,3 @@ figs/
 tables/
 UCI HAR Dataset/
 gas/
-README.md
