@@ -2,13 +2,23 @@
 *.py[cod]
 *.pyo
 *.pyd
+.DS_Store
 .venv/
 venv/
 .env
+.clj-kondo/
+.lsp/
 outputs/
 paper/
+bj_paper/
 notes/
 figs/
 tables/
 UCI HAR Dataset/
 gas/
+/Fig*.png
+/Fig*.pdf
+/fig*.png
+/fig*.pdf
+/Table*.csv
+/C:\joblib_temp/

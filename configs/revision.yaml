@@ -2,12 +2,14 @@ eps_list: [0.5, 0.8, 1.0]
 seeds: [0, 1, 2]
 T: 20
 clip_B: 3.0
+clip_norm: 3.0
+eps_fs_ratio: 0.05
+eps_topm_ratio: 0.6
 proxy_eps_ratio: 0.1
-proxy_eps_min: 0.15
-proxy_after_reduction: true
+proxy_dim: 16
 proxy_init_frac: 0.5
 proxy_init_min: 1500
-proxy_init_mode: noisy_means
+eps_cnt_ratio: 0.2
 jobs: 6
 
 budget:
@@ -36,16 +38,32 @@ datasets:
   har:
     root: "./UCI HAR Dataset"
     k: 6
-    pus_top_m: 128
-    pca_r: 64
+    pus_top_m: 96
+    pca_r: 16
     d_sub_list: [561]
+    method_overrides:
+      sahdpca:
+        pus_top_m: 96
+        pca_r: 96
+        use_pca: false
+        proxy_dim: 32
+        proxy_eps_ratio: 0.1
   gas:
     root: "./gas"
     k: 6
-    pus_top_m: 64
-    pca_r: 32
+    pus_top_m: 48
+    pca_r: 12
+    method_overrides:
+      sahdpca:
+        pus_top_m: 64
+        pca_r: 64
+        use_pca: false
+        proxy_dim: 16
+        proxy_eps_ratio: 0.1
   synthetic:
     k: 10
+    pus_top_m: 64
+    pca_r: 16
     n_list: [10000, 30000, 50000]
     d_list: [256, 512, 1024, 2000]
   synthetic_stream:
@@ -53,6 +71,8 @@ datasets:
     n: 20000
     d: 512
     batches: 10
+    pus_top_m: 64
+    pca_r: 16
 
 revision:
   sensitivity:
@@ -60,9 +80,9 @@ revision:
     eps: 1.0
     seeds: [0]
     method: sahdpca
-    pus_top_m_list: [64, 128]
-    pca_r_list: [32, 64]
-    proxy_eps_ratios: [0.1, 0.2]
+    pus_top_m_list: [64, 80, 96, 128]
+    pca_r_list: [64, 80, 96, 128]
+    proxy_eps_ratios: [0.1, 0.15, 0.2]
     budget_beta_list: [0.6, 0.8]
     budget_gamma_list: [0.5, 1.0]
   scalability:

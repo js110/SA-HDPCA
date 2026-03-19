@@ -2,8 +2,8 @@
 
 Code release for **SA-HDPCA** (Sensitivity-Aware Differentially Private Clustering).
 
-This repository contains source code, configs, and experiment scripts.
-Large result files and manuscript files are intentionally excluded.
+This repository contains the source code, configs, and experiment scripts used for the strict-DP revision of the method.
+Large result files, datasets, and manuscript files are intentionally excluded.
 
 ## Repository Structure
 
@@ -63,7 +63,17 @@ python -m src.runner --config configs/default.yaml --out outputs/smoke --smoke
 python -m src.runner --config configs/default.yaml --out outputs/main_e1 --exp e1
 ```
 
-### 3) Recent baseline comparison
+### 3) Strict Tier A tuning and frozen evaluation
+
+```bash
+python scripts/run_tier_a_strict.py \
+  --config configs/default.yaml \
+  --out outputs/tier_a_strict
+```
+
+This runner performs a fair strict-DP tuning stage on the core budgets and then freezes the best configuration for the final Tier A evaluation.
+
+### 4) Recent baseline comparison
 
 ```bash
 python scripts/run_recent_baselines.py \
@@ -83,7 +93,7 @@ python scripts/plot_recent_baselines.py \
   --outdir outputs/compare_recent_2024_2025/figures
 ```
 
-### 4) Revision extension experiments
+### 5) Revision extension experiments
 
 ```bash
 python scripts/run_revision_exps.py --config configs/revision.yaml --out outputs/revision --only all

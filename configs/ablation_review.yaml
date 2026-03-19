@@ -1,14 +1,16 @@
-eps_list: [0.2, 0.5, 0.8, 1.0, 1.5]
+eps_list: [0.5, 0.8, 1.0, 1.5]
 seeds: [0, 1, 2, 3, 4]
 T: 20
 clip_B: 3.0
+clip_norm: 3.0
+eps_fs_ratio: 0.05
+eps_topm_ratio: 0.6
 proxy_eps_ratio: 0.1
-proxy_eps_min: 0.15
-proxy_after_reduction: true
+proxy_dim: 16
 proxy_init_frac: 0.5
 proxy_init_min: 1500
-proxy_init_mode: point_noise
 proxy_rr_restarts: 10
+eps_cnt_ratio: 0.2
 collapse_min_ratio: 0.01
 jobs: 12
 budget:
@@ -37,16 +39,68 @@ datasets:
   har:
     root: "./UCI HAR Dataset"
     k: 6
-    pus_top_m: 128
-    pca_r: 64
+    pus_top_m: 96
+    pca_r: 16
     d_sub_list: [561]
+    method_overrides:
+      sahdpca_fb_v3:
+        pus_top_m: 128
+        pca_r: 128
+        use_pca: false
+      sahdpca_proxy_kpp:
+        pus_top_m: 128
+        pca_r: 128
+        use_pca: false
+      sahdpca_proxy_rr:
+        pus_top_m: 128
+        pca_r: 128
+        use_pca: false
+      sahdpca_fb_v2:
+        pus_top_m: 128
+        pca_r: 128
+        use_pca: false
+      sahdpca_wo_feedback:
+        pus_top_m: 128
+        pca_r: 128
+        use_pca: false
+      sahdpca_strong:
+        pus_top_m: 128
+        pca_r: 128
+        use_pca: false
   gas:
     root: "./gas"
     k: 6
-    pus_top_m: 64
-    pca_r: 32
+    pus_top_m: 48
+    pca_r: 12
+    method_overrides:
+      sahdpca_fb_v3:
+        pus_top_m: 80
+        pca_r: 80
+        use_pca: false
+      sahdpca_proxy_kpp:
+        pus_top_m: 80
+        pca_r: 80
+        use_pca: false
+      sahdpca_proxy_rr:
+        pus_top_m: 80
+        pca_r: 80
+        use_pca: false
+      sahdpca_fb_v2:
+        pus_top_m: 80
+        pca_r: 80
+        use_pca: false
+      sahdpca_wo_feedback:
+        pus_top_m: 80
+        pca_r: 80
+        use_pca: false
+      sahdpca_strong:
+        pus_top_m: 80
+        pca_r: 80
+        use_pca: false
   synthetic:
     k: 10
+    pus_top_m: 64
+    pca_r: 16
     n_list: [1000, 5000, 10000]
     d_list: [128, 256, 512]
 
@@ -66,15 +120,15 @@ experiments:
   ea:
     datasets: [har, gas]
     methods: [sahdpca_fb_v3, sahdpca_proxy_kpp, sahdpca_proxy_rr]
-    eps_list: [0.2, 0.5, 0.8, 1.0, 1.5]
+    eps_list: [0.5, 0.8, 1.0, 1.5]
     seeds: [0, 1, 2, 3, 4]
   eb:
     datasets: [har, gas]
     methods: [sahdpca_fb_v3, sahdpca_pca_only, sahdpca_rand_feat]
-    eps_list: [0.2, 0.5, 0.8, 1.0, 1.5]
+    eps_list: [0.5, 0.8, 1.0, 1.5]
     seeds: [0, 1, 2, 3, 4]
   ec:
     datasets: [har, gas]
     methods: [sahdpca_fb_v3, sahdpca_fb_v2, sahdpca_wo_feedback, sahdpca_strong]
-    eps_list: [0.2, 0.5, 0.8, 1.0, 1.5]
+    eps_list: [0.5, 0.8, 1.0, 1.5]
     seeds: [0, 1, 2, 3, 4]
