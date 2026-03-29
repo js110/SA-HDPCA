@@ -335,17 +335,23 @@ def load_best_configs(path: str) -> Dict[str, Dict]:
         return {}
     out: Dict[str, Dict] = {}
     for dataset, methods_blob in raw.items():
+        ds_key = dataset.upper()
+        out[ds_key] = {}
         best_method = None
         best_payload = None
         best_score = float("-inf")
         for method, payload in methods_blob.items():
+            out[ds_key][method] = {
+                "candidate": dict(payload.get("candidate", {})),
+                "summary": dict(payload.get("summary", {})),
+            }
             score = float(payload.get("summary", {}).get("f1_mean", float("-inf")))
             if method.startswith("sahdpca") and score > best_score:
                 best_score = score
                 best_method = method
                 best_payload = payload
         if best_method is not None and best_payload is not None:
-            out[dataset.upper()] = {
+            out[ds_key]["__strict_best__"] = {
                 "internal_method": best_method,
                 "candidate": dict(best_payload.get("candidate", {})),
                 "summary": dict(best_payload.get("summary", {})),
@@ -411,13 +417,14 @@ def pick_history_path(user_path: Optional[str]) -> Optional[Path]:
     if user_path:
         path = Path(user_path)
         return path if path.exists() else None
-    default = Path("outputs/compare_2024_2025/raw_results.csv")
-    if default.exists():
-        return default
     outputs_dir = Path("outputs")
     if not outputs_dir.exists():
         return None
-    candidates = list(outputs_dir.rglob("raw_results.csv")) + list(outputs_dir.rglob("results.csv"))
+    candidates = (
+        list(outputs_dir.rglob("raw_results_new.csv"))
+        + list(outputs_dir.rglob("raw_results.csv"))
+        + list(outputs_dir.rglob("results.csv"))
+    )
     for path in candidates:
         df = load_history(path)
         if df is None:
@@ -558,12 +565,13 @@ def main() -> None:
                 raise RuntimeError("Full config not loaded for full method run.")
             dataset_key = ds.upper()
             if method == STRICT_BEST_LABEL:
-                best_payload = best_cfg_by_dataset.get(dataset_key, {})
+                best_payload = best_cfg_by_dataset.get(dataset_key, {}).get("__strict_best__", {})
                 core_method = best_payload.get("internal_method", "sahdpca")
                 dataset_overrides = split_dataset_overrides(core_method, best_payload.get("candidate", {}))
             else:
                 core_method = "pca_dp"
-                dataset_overrides = None
+                pca_payload = best_cfg_by_dataset.get(dataset_key, {}).get("pca_dp", {})
+                dataset_overrides = split_dataset_overrides(core_method, pca_payload.get("candidate", {}))
             result = core_methods.run_method(
                 dataset=ds.lower(),
                 method=core_method,

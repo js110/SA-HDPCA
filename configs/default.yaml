@@ -197,7 +197,7 @@ smoke:
 
 tier_a:
   datasets: [har, gas]
-  methods: [dp_kmeans, kmeanspp_dp, pca_dp, sahdpca_wo_feedback, sahdpca]
+  methods: [dp_kmeans, kmeanspp_dp, pca_dp, sahdpca_wo_feedback, sahdpca, sahdpca_proxy_kpp, sahdpca_proxy_rr]
   tune_eps: [0.8, 1.0]
   eval_eps: [0.5, 0.8, 1.0, 1.5]
   tune_seeds: [0, 1]
@@ -219,6 +219,14 @@ tier_a:
         use_pca: [false]
         proxy_dim: [16, 24, 32]
         proxy_eps_ratio: [0.1, 0.15, 0.2]
+      sahdpca_proxy_kpp:
+        use_pca: [false]
+        proxy_dim: [16, 24, 32]
+        proxy_eps_ratio: [0.1, 0.15, 0.2]
+      sahdpca_proxy_rr:
+        use_pca: [false]
+        proxy_dim: [16, 24, 32]
+        proxy_eps_ratio: [0.1, 0.15, 0.2]
     datasets:
       har:
         pca_dp:
@@ -227,10 +235,18 @@ tier_a:
           pus_top_m: [96, 128, 160]
         sahdpca:
           pus_top_m: [96, 128, 160]
+        sahdpca_proxy_kpp:
+          pus_top_m: [96, 128, 160]
+        sahdpca_proxy_rr:
+          pus_top_m: [96, 128, 160]
       gas:
         pca_dp:
           pca_r: [12, 16, 24]
         sahdpca_wo_feedback:
           pus_top_m: [64, 80, 96]
         sahdpca:
+          pus_top_m: [64, 80, 96]
+        sahdpca_proxy_kpp:
+          pus_top_m: [64, 80, 96]
+        sahdpca_proxy_rr:
           pus_top_m: [64, 80, 96]

@@ -51,7 +51,18 @@ def _cartesian(grid: Dict[str, Iterable[Any]]) -> List[Dict[str, Any]]:
 def _tier_a_cfg(config: Dict[str, Any]) -> Dict[str, Any]:
     tier_a = dict(config.get("tier_a", {}))
     tier_a.setdefault("datasets", ["har", "gas"])
-    tier_a.setdefault("methods", ["dp_kmeans", "kmeanspp_dp", "pca_dp", "sahdpca_wo_feedback", "sahdpca"])
+    tier_a.setdefault(
+        "methods",
+        [
+            "dp_kmeans",
+            "kmeanspp_dp",
+            "pca_dp",
+            "sahdpca_wo_feedback",
+            "sahdpca",
+            "sahdpca_proxy_kpp",
+            "sahdpca_proxy_rr",
+        ],
+    )
     tier_a.setdefault("tune_eps", [0.8, 1.0])
     tier_a.setdefault("eval_eps", [0.5, 0.8, 1.0, 1.5])
     tier_a.setdefault("tune_seeds", [0, 1])

@@ -49,9 +49,9 @@ def add_label(ax: plt.Axes, text: str) -> None:
 
 def plot_sensitivity(sens_path: Path, out_dir: Path) -> None:
     df = pd.read_csv(sens_path)
-    params = ["pus_top_m", "proxy_eps_ratio", "beta", "gamma"]
+    params = ["proxy_eps_ratio", "beta", "gamma"]
     datasets = ["har", "gas"]
-    fig, axes = plt.subplots(2, 4, figsize=(10.0, 4.8), sharey=False)
+    fig, axes = plt.subplots(2, 3, figsize=(7.8, 4.8), sharey=False)
     for i, dataset in enumerate(datasets):
         for j, param in enumerate(params):
             ax = axes[i, j]
@@ -75,7 +75,7 @@ def plot_sensitivity(sens_path: Path, out_dir: Path) -> None:
             ax.set_xlabel(param)
             ax.set_ylabel("Macro-F1")
             ax.grid(True, linestyle="--", color="#ccc", alpha=0.7)
-            label = f"({chr(97 + i*4 + j)}) {dataset.upper()}"
+            label = f"({chr(97 + i*3 + j)}) {dataset.upper()}"
             add_label(ax, label)
     fig.tight_layout()
     fig.subplots_adjust(wspace=0.28, hspace=0.32)
@@ -134,9 +134,13 @@ def plot_imbalance_streaming(imb_path: Path, st_path: Path, out_dir: Path) -> No
 def main() -> None:
     set_style()
     out_dir = Path("figs")
-    plot_sensitivity(Path("outputs/revision/sensitivity.csv"), out_dir)
-    plot_scalability(Path("outputs/revision/scalability.csv"), out_dir)
-    plot_imbalance_streaming(Path("outputs/revision/imbalance.csv"), Path("outputs/revision/streaming.csv"), out_dir)
+    plot_sensitivity(Path("outputs/revision_strict/sensitivity.csv"), out_dir)
+    plot_scalability(Path("outputs/revision_strict/scalability.csv"), out_dir)
+    plot_imbalance_streaming(
+        Path("outputs/revision_strict/imbalance.csv"),
+        Path("outputs/revision_strict/streaming.csv"),
+        out_dir,
+    )
 
 
 if __name__ == "__main__":
